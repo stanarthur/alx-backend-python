@@ -17,4 +17,4 @@ Read or watch:
 - [Type-hints for generators](https://stackoverflow.com/questions/42531143/how-to-type-hint-a-generator-in-python-3)
 
 ## :pencil: **Author**
-###: Stanhope Arthur
+### : Stanhope Arthur
