@@ -3,15 +3,18 @@
 """
 import unittest
 from typing import Dict, Tuple, Union
-from parameterized import parameterized
 from unittest.mock import patch, Mock
+from parameterized import parameterized
 
-from utils import (access_nested_map, get_json,
-                   memoize)
+from utils import (
+    access_nested_map,
+    get_json,
+    memoize,
+)
 
 
 class TestAccessNestedMap(unittest.TestCase):
-    """Tests the `access_nested_map` function."""
+    """To tests the `access_nested_map` function."""
     @parameterized.expand([
         ({"a": 1}, ("a",), 1),
         ({"a": {"b": 2}}, ("a",), {"b": 2}),
@@ -23,7 +26,7 @@ class TestAccessNestedMap(unittest.TestCase):
             path: Tuple[str],
             expected_answer: Union[Dict, int],
             ) -> None:
-        """Tests `access_nested_map`'s output."""
+        """This tests `access_nested_map`'s output."""
         self.assertEqual(access_nested_map(nested_map, path), expected_answer)
 
     @parameterized.expand([
@@ -36,14 +39,13 @@ class TestAccessNestedMap(unittest.TestCase):
             path: Tuple[str],
             exception: Exception,
             ) -> None:
-        """Tests `access_nested_map`'s exception raising."""
+        """Test for `access_nested_map`'s exception raising."""
         with self.assertRaises(exception):
             access_nested_map(nested_map, path)
 
 
 class TestGetJson(unittest.TestCase):
-    """To test the get_json function
-    that returns an expected result"""
+    """Tests the `get_json` function."""
     @parameterized.expand([
         ("http://example.com", {"payload": True}),
         ("http://holberton.io", {"payload": False}),
@@ -53,29 +55,32 @@ class TestGetJson(unittest.TestCase):
             test_url: str,
             test_payload: Dict,
             ) -> None:
-        """To test the get_json function"""
+        """To tests `get_json`'s output."""
         attrs = {'json.return_value': test_payload}
         with patch("requests.get", return_value=Mock(**attrs)) as req_get:
             self.assertEqual(get_json(test_url), test_payload)
             req_get.assert_called_once_with(test_url)
 
-    class TestMemoize(unittest.TestCase):
-        """Class to test the memoize function"""
-        def test_memoize(self) -> None:
-            """To test the memoize function"""
-            class TestClass:
-                def a_method(self):
-                    return 42
 
-                @memoize
-                def a_property(self):
-                    return self.a_method()
-            with patch.object(
-                    TestClass,
-                    "a_method",
-                    return_value=lambda: 42,
-                    ) as memo_fxn:
-                test_class = TestClass()
-                self.assertEqual(test_class.a_property(), 42)
-                self.assertEqual(test_class.a_property(), 42)
-                memo_fxn.assert_called_once()
+class TestMemoize(unittest.TestCase):
+    """It tests the `memoize` function."""
+    def test_memoize(self) -> None:
+        """It tests `memoize`'s output."""
+        class TestClass:
+            def a_method(self):
+                return 42
+
+            @memoize
+            def a_property(self):
+                return self.a_method()
+        with patch.object(
+                TestClass,
+                "a_method",
+                return_value=lambda: 42,
+                ) as memo_fxn:
+            """Tests `memoize`'s output."""
+            test_class = TestClass()
+            self.assertEqual(test_class.a_property(), 42)
+            self.assertEqual(test_class.a_property(), 42)
+            """Tests `memoize`'s called once."""
+            memo_fxn.assert_called_once()
