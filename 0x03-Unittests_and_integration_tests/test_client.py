@@ -3,7 +3,8 @@
 """
 import unittest
 from unittest.mock import (MagicMock,
-                           patch,)
+                           patch,
+                           memoize,)
 
 from parameterized import parameterized, parameterized_class
 from client import (
