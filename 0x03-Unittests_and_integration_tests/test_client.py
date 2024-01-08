@@ -103,11 +103,13 @@ class TestGithubOrgClient(unittest.TestCase):
             )
             mock_public_repos_url.assert_called_once()
         mock_get_json.assert_called_once()
+
     @parameterized.expand([
-        ({'license': {'key': "bsd-3-clause"}},"bsd-3-clause", True),
-        ({'license': {'key': "bsl-1.0"}},"bsd-3-clause", False),
+        ({'license': {'key': "bsd-3-clause"}}, "bsd-3-clause", True),
+        ({'license': {'key': "bsl-1.0"}}, "bsd-3-clause", False),
     ])
-    def test_has_license(self, repo:Dict, key: str, expected_answer: bool) -> None:
+    def test_has_license(self, repo: Dict, key: str,
+                         expected_answer: bool) -> None:
         """Tests the `has_license` method."""
         gh_org_client = GithubOrgClient("google")
         client_has_license = gh_org_client.has_license(repo, key)
@@ -136,7 +138,7 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
             if url in route_payload:
                 return Mock(**{'json.return_value': route_payload[url]})
             return HTTPError
-        
+
         cls.get_patcher = patch("requests.get", side_effect=get_payload)
         cls.get_patcher.start()
 
